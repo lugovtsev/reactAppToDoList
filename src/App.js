@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import TasksList from './components/TasksList';
+import TasksListActual from './components/TasksListActual';
+import TasksListDone from './components/TasksListDone';
 import './App.css';
 
 class App extends Component {
@@ -7,19 +8,17 @@ class App extends Component {
     super(props);
     this.state = {
       list: [
-        id1=> {task: 'to do something 1', done: false},
-        id2=> {task: 'to do something 2', done: false},
-        id3=> {task: 'to do something 3', done: true},
-        id4=> {task: 'to do something 4', done: false}
+        {task: 'to do something 1', done: false},
+        {task: 'to do something 2', done: false},
+        {task: 'to do something 3', done: true},
+        {task: 'to do something 4', done: true}
       ]
     }
     this.checkedHandler = this.checkedHandler.bind(this);
   }
   checkedHandler(event) {
-    console.log(event.target.value);
     let newList = this.state.list;
-    console.log(newList[event.target.value].done);
-
+    newList[event.target.value].done = (newList[event.target.value].done) ? false : true;
     this.setState({
       list: newList
     })
@@ -32,18 +31,19 @@ class App extends Component {
           <input type="text" id="add-input" placeholder="Add new task..." />
           <span id="show-important-tasks" className="icon-star-full" />
         </div>
-        <TasksList list={this.state.list} toggleHandler={this.checkedHandler} />
+        <TasksListActual list={this.state.list} toggleHandler={this.checkedHandler} />
         <div className="controls">
           <span id="show-completed-tasks">Show completed tasks</span>
           <span id="remove-completed-tasks" className="icon-bin" />
         </div>
-        <div id="completed-tasks-list" className="hidden">
-          <div className="task-item done"><input type="checkbox" onChange={this.checkedHandler} checked /> <div className="task-item__text"><p>Play the game</p><span className="star icon-star-full"></span></div></div>
-        <div className="task-item done"><input type="checkbox" onChange={this.checkedHandler} checked /> <div className="task-item__text"><p>Do exercise</p><span className="star icon-star-empty"></span></div></div>
-        </div>
+        <TasksListDone list={this.state.list} toggleHandler={this.checkedHandler} />
       </div>
     );
   }
 }
-
+/*
+App.defaultProps = {
+  status: "actual"
+}
+*/
 export default App;
