@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import TasksListActual from './components/TasksListActual';
-import TasksListDone from './components/TasksListDone';
+import TasksList from './components/TasksList';
+import TaskAdding from './components/TaskAdding';
 import './App.css';
 
 class App extends Component {
@@ -15,7 +15,9 @@ class App extends Component {
       ]
     }
     this.checkedHandler = this.checkedHandler.bind(this);
+    this.addTaskHandler = this.addTaskHandler.bind(this);
   }
+
   checkedHandler(event) {
     let newList = this.state.list;
     newList[event.target.value].done = (newList[event.target.value].done) ? false : true;
@@ -23,27 +25,32 @@ class App extends Component {
       list: newList
     })
   }
+
+  addTaskHandler(event) {
+    if (event.keyCode === 13) {
+      let newList = this.state.list;
+      newList.push({task: event.target.value, done: false});
+      event.target.value ='';
+      this.setState({
+        list: newList
+      })
+    }
+  }
+
   render() {
     return (
       <div className="content">
         <h1>MyList <span className="icon-star-empty"></span></h1>
-        <div className="add-task">
-          <input type="text" id="add-input" placeholder="Add new task..." />
-          <span id="show-important-tasks" className="icon-star-full" />
-        </div>
-        <TasksListActual list={this.state.list} toggleHandler={this.checkedHandler} />
+        <TaskAdding pressHandler={this.addTaskHandler}/>
+        <TasksList taskStatus="actual" list={this.state.list} toggleHandler={this.checkedHandler} />
         <div className="controls">
           <span id="show-completed-tasks">Show completed tasks</span>
           <span id="remove-completed-tasks" className="icon-bin" />
         </div>
-        <TasksListDone list={this.state.list} toggleHandler={this.checkedHandler} />
+        <TasksList taskStatus="done" list={this.state.list} toggleHandler={this.checkedHandler} />
       </div>
     );
   }
 }
-/*
-App.defaultProps = {
-  status: "actual"
-}
-*/
+
 export default App;
