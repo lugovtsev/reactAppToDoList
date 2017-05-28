@@ -8,10 +8,10 @@ class App extends Component {
     super(props);
     this.state = {
       list: [
-        {task: 'to do something 1', favorite: false, done: false},
-        {task: 'to do something 2', favorite: true, done: false},
-        {task: 'to do something 3', favorite: false, done: false},
-        {task: 'to do something 4', favorite: false, done: true}
+        {task: 'to do something 1', changingDate: 1495768660991, favorite: false, done: false},
+        {task: 'to do something 2', changingDate: 1495718670991, favorite: true, done: false},
+        {task: 'to do something 3', changingDate: 1495778680991, favorite: false, done: false},
+        {task: 'to do something 4', changingDate: 1495798690991, favorite: false, done: true}
       ]
     }
     this.checkedHandler = this.checkedHandler.bind(this);
@@ -19,18 +19,23 @@ class App extends Component {
     this.favoriteHandler = this.favoriteHandler.bind(this);
   }
 
+  upDate(tasksArr, taskIndex) {
+    tasksArr[taskIndex].changingDate = Date.now();
+  }
+
   checkedHandler(event) {
     let newList = this.state.list;
     newList[event.target.value].done = (newList[event.target.value].done) ? false : true;
+    this.upDate(newList, event.target.value);
     this.setState({
       list: newList
     })
   }
 
   addTaskHandler(event) {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && event.target.value !== '') {
       let newList = this.state.list;
-      newList.unshift({task: event.target.value, favorite: false, done: false});
+      newList.unshift({task: event.target.value, changingDate: Date.now(), favorite: false, done: false});
       event.target.value ='';
       this.setState({
         list: newList
@@ -39,25 +44,10 @@ class App extends Component {
   }
 
   favoriteHandler(event) {
-    console.log(event.target.id);
     let newList = this.state.list;
     newList[event.target.id].favorite = (newList[event.target.id].favorite) ? false : true;
-    let movingObj = newList.splice(event.target.id,1);
-    /*function array_values (input) {
-      var tmpArr = []
-      var key = ''
-      for (key in input) {
-        tmpArr[tmpArr.length] = input[key]
-      }
-      return tmpArr
-    }
-    newList = array_values(newList);*/
-    if (newList[event.target.id].favorite) {
-      newList.unshift(movingObj[0]);
-    } else {
-      newList.push(movingObj[0]);
-    }
-
+    //let test = Date.now();
+    this.upDate(newList, event.target.id);
     this.setState({
       list: newList
     })
