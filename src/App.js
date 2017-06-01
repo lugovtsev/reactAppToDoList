@@ -11,10 +11,10 @@ class App extends Component {
     super(props);
     this.state = {
       list: [
-        {task: 'to do something 1', changingDate: 1495768660991, favorite: true, done: false},
-        {task: 'to do something 2', changingDate: 1495718670991, favorite: true, done: false},
-        {task: 'to do something 3', changingDate: 1495778680991, favorite: false, done: false},
-        {task: 'to do something 4', changingDate: 1495798690991, favorite: false, done: true}
+        // {task: 'to do something 1', changingDate: 1495768660991, favorite: true, done: false},
+        // {task: 'to do something 2', changingDate: 1495718670991, favorite: true, done: false},
+        // {task: 'to do something 3', changingDate: 1495778680991, favorite: false, done: false},
+        // {task: 'to do something 4', changingDate: 1495798690991, favorite: false, done: true}
       ],
       justFavorite: false,
       visibleDone: { display: 'none' }
@@ -32,8 +32,9 @@ class App extends Component {
       .then(response => {
         return response.json();
       }).then(json => {
+        console.log(json);
         this.setState({
-          list: json.results
+          list: json
         })
       }).catch(err => {
         console.log(err)
@@ -41,7 +42,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.loadTasksList('http://lugovtsev.ru/api/?all');
+    this.loadTasksList('https://lugovtsev.ru/api/?all');
   }
 
   upDate(tasksArr, taskIndex) {
