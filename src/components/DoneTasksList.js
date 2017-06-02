@@ -9,7 +9,7 @@ const TasksList = ({list, toggleHandler, favoriteHandler, visibleDone}) => {
           <div key={index} className="task-item done">
             <input value={index} type="checkbox" onChange={toggleHandler} checked="checked"/>
             <div className="task-item__text">
-              <p>{task.task} - {taskDate}</p>
+              <p>{task.text} - {taskDate}</p>
             </div>
           </div> : null
         )
